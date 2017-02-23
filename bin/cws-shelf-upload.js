@@ -1,7 +1,9 @@
 #!/usr/bin/env node
 "use strict";
 
-var container;
+var container, exit;
+
+exit = process.exit;
 
 container = require("../lib/container");
 container.callAsync((config, helpMessage, neodoc) => {
@@ -47,19 +49,23 @@ container.callAsync((config, helpMessage, neodoc) => {
                 return result;
             });
         }).then(() => {
-            log.info("Done");
-            log.debug("Done");
+            /**
+             * This was done in an attempt to avoid showing "Done" twice when
+             * in debug mode but to also log.debug when we are in debug mode.
+             * This is because the log.debug outputs additional information
+             * including timing information so I don't think log.info is
+             * sufficient.
+             */
+            if (config.debug) {
+                log.debug("Done");
+            } else {
+                log.info("Done");
+            }
         }, (err) => {
             log.error(`${err.toString()}`);
             log.debug(err.stack);
 
-            // eslint-disable-next-line no-process-exit
-            process.exit(1);
+            exit(1);
         });
     });
-}).then(null, () => {
-    console.log("Uncaught promise rejection");
-
-    // eslint-disable-next-line no-process-exit
-    process.exit(1);
 });

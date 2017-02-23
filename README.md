@@ -1,7 +1,7 @@
 cws-shelf-upload
 ================
 
-[Shelf] is a generic API and making something generic means that it can be complicated to work with. This tool is aimed at norrowing down how Shelf is used specifically for Connected World Services.
+[Shelf] is a generic API and making something generic means that it can be complicated to work with. This tool is aimed at narrowing down how Shelf is used specifically for Connected World Services.
 
 
 [![npm version][npm-badge]][npm-link]
@@ -10,15 +10,15 @@ cws-shelf-upload
 Overview
 --------
 
-Right now our official upload tool is curl which can be difficult to use even for people familiar with it. This tool was created as stop gap for a full UI. It is an improvement in the following ways:
+Before this tool, the only way to upload things to [Shelf] was to use tools like curl which can be difficult to use even for people familiar with it. `cws-shelf-upload` was created as a stop gap for a full UI. It is an improvement in the following ways:
 
 * No need to type in host and protocol.
 * No need to think about the path you want to upload an artifact in. We just require you to provide `--shelf` and `--component` and the file you are uploading.
-* Automatically ensure the path is unqiue so there are no conflicts.
+* Ensure the path is unqiue so there are no conflicts.
 * Forces `--version` to be provided so that downstream systems can rely on it being there.
 * Provides a more shell friendly format for metadata. No need to enter JSON.
 
-There are however many things this tool does NOT do:
+There are, however, many things this tool does NOT do:
 
 * Searching.
 * Create/Read/Update/Delete metadata when an artifact is not being uploaded.
@@ -36,7 +36,6 @@ Note: `--shelf` is what some would refer to as a "bucket" or "storage".
     Successfully uploaded artifacts.
     https://api.shelf.cwscloud.net/cws/artifact/cws-api/2017-02-17T1558:29.397Z-5jHodx2U3J/cws-api.gz.tar
     Done
-    $
 
 You can use the full URI given back to perform other [Shelf] queries.
 
