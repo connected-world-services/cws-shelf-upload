@@ -44,13 +44,11 @@ Overview
 
 		--immutable <KEY:VALUE>...
 							   Optional: Add extra metadata. Immutable once
-							   uploaded. This option can be repeated. See
-							   METADATA PARSING below for more information.
+							   uploaded. This option can be repeated.
 
 		--metadata <KEY:VALUE>...
 							   Optional: Add extra metadata. This option can be
-							   repeated. See METADATA PARSING below for more
-							   information.
+							   repeated.
 
 		--noop, -n             Do not perform the upload. Simply output what
 							   would have happened.
