@@ -1,0 +1,40 @@
+{
+    "name": "cws-shelf-upload",
+    "version": "1.0.0",
+    "description": "Uploads files to Shelf",
+    "main": "lib/index.js",
+    "bin": {
+        "cws-shelf-upload": "bin/cws-shelf-upload.js"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://gitlab.cwscloud.net/shelf/cws-shelf-upload.git"
+    },
+    "keywords": [
+        "shelf",
+        "upload"
+    ],
+    "author": "Tyler Akins <fidian@rumkin.com>",
+    "contributors": [
+        {
+            "name": "Kyle Long",
+            "email": "uilwen@gmail.com",
+            "url": "https://github.com/kyle-long"
+        }
+    ],
+    "private": true,
+    "bugs": {
+        "url": "https://gitlab.cwscloud.net/shelf/cws-shelf-upload/issues"
+    },
+    "homepage": "https://gitlab.cwscloud.net/shelf/cws-shelf-upload#readme",
+    "dependencies": {
+        "debug": "~2.6.0",
+        "dizzy": "~2.2.1",
+        "dizzy-promisify-bluebird": "~1.0.0",
+        "more-promises": "~1.1.0",
+        "neodoc": "~1.4.0",
+        "randomstring": "~1.1.0",
+        "semver-regex": "~1.0.0",
+        "shelf-lib": "~1.1.0"
+    }
+}
