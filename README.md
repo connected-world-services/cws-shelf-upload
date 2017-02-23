@@ -12,8 +12,7 @@ Overview
 
 	cws-shelf-upload usage:
 
-		cws-shelf-upload --shelf=NAME --component=NAME
-			--version=X.Y.Z [OPTIONS] FILE [FILE]...
+		cws-shelf-upload --shelf=NAME --component=NAME --version=X.Y.Z [OPTIONS] FILE [FILE]...
 
 	Arguments:
 
