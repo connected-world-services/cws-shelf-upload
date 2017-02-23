@@ -10,12 +10,82 @@ cws-shelf-upload
 Overview
 --------
 
+	cws-shelf-upload usage:
+
+		cws-shelf-upload --shelf=NAME --component=NAME
+			--version=X.Y.Z [OPTIONS] FILE [FILE]...
+
+	Arguments:
+
+		FILE                   Required: The path to at least one file to upload.
+							   You may provide this as many times as you wish and
+							   they will all be uploaded to the same directory. Any
+							   type of file can be uploaded.
+
+	Options:
+
+		--build <NUMBER>       Optional: Specifies the build number in the
+							   metadata. This will be immutable.
+
+		--branch <NAME>        Optional: Indicates the version control branch that
+							   was the source for this file. Immutableonce
+							   uploaded.
+
+		--component <NAME>     Required: What component is being uploaded to Shelf.
+							   This is used in the path.
+
+		--debug                Optional: Enable debug logging.
+							   [env: DEBUG]
+
+		--git-commit <COMMIT>  Optional: Sets VCS Reference sting to a specific git
+							   commit. Immutable once uploaded.
+
+		--help, -h             Optional: Show this helpful message.
+
+		--immutable <KEY:VALUE>...
+							   Optional: Add extra metadata. Immutable once
+							   uploaded. This option can be repeated. See
+							   METADATA PARSING below for more information.
+
+		--metadata <KEY:VALUE>...
+							   Optional: Add extra metadata. This option can be
+							   repeated. See METADATA PARSING below for more
+							   information.
+
+		--noop, -n             Do not perform the upload. Simply output what
+							   would have happened.
+
+		--shelf <NAME>         Required: The main grouping on Shelf where the files
+							   will be uploaded. This is used in the path.
+
+		--svn-build <BUILD>    Optional: Sets the VCS Reference string to a
+							   subversion build number. Immutable once uploaded.
+
+		--token <AUTHTOKEN>    Optional: Shelf authorization token. Either this or
+							   an environment variable must be provided.
+							   [env: SHELF_AUTH_TOKEN]
+
+		--vcs-ref <REFSTRING>  Optional: Indicate a specific revision tracked by a
+							   version control system that was used to build the
+							   file. Immutable once uploaded.
+
+		--version <X.Y.Z>      Required: Specify a semantic version number.
+							   Immutable once uploaded. Must start with a digit and
+							   be a valid semantic version number.
+
+		--host-prefix <PREFIX> Optional: The protocol and host you would like to
+							   make a request to.
+							   [default: https://api.shelf.cwscloud.net]
+
+	If there are any problems, this program exits with a non-zero status code.
+
 Before this tool, the only way to upload things to [Shelf] was to use tools like curl which can be difficult to use even for people familiar with it. `cws-shelf-upload` was created as a stop gap for a full UI. It is an improvement in the following ways:
 
 * No need to type in host and protocol.
 * No need to think about the path you want to upload an artifact in. We just require you to provide `--shelf` and `--component` and the file you are uploading.
 * Ensure the path is unqiue so there are no conflicts.
 * Forces `--version` to be provided so that downstream systems can rely on it being there.
+* Ensures the file uploaded was uploaded without becoming corrupt by validating its `md5Hash`.
 * Provides a more shell friendly format for metadata. No need to enter JSON.
 
 There are, however, many things this tool does NOT do:
@@ -23,21 +93,41 @@ There are, however, many things this tool does NOT do:
 * Searching.
 * Create/Read/Update/Delete metadata when an artifact is not being uploaded.
 
+Files will be uploaded to Shelf using a path that's constructed using this pattern:
 
-Example
--------
+    /<shelf>/artifact/<component>/<timestampAndRandomId>/<file>
 
-For full information on the tool use the `--help` option. The following is an example of uploading a new code base for the "cws-api" to the "cws" product. I also want to add a `buildNumber` to my new artifact.
+The timestamp is in the format YYYY-MM-DD-HH-MM-SS.SSS. The random id is 10 characters long. It exists to make conflicts less likely.
+
+
+Metadata Parsing
+----------------
+
+Everything before the first colon(:) will be the metadata name and everything afterwards will be the value. That means that although the Shelf API supports it, you cannot make a metadata property with a name that has a colon in it.
+
+Examples
+--------
+
+For full information on the tool use the `--help` option. The following is an example of uploading a new code base for the "reporting-api" to the "shadow" product. I also want to add a `buildNumber` to my new artifact.
 
 Note: `--shelf` is what some would refer to as a "bucket" or "storage".
 
     $ export SHELF_AUTH_TOKEN="supersecrettoken"
-    $ cws-shelf-upload --shelf="cws" --component="cws-api" --version=1.0.0 --immutable=buildNumber:4 cws-api.gz.tar
+    $ cws-shelf-upload --shelf="shadow" --component="reporting-api" --version=1.0.0 --immutable=buildNumber:4 reporting-api.gz.tar
     Successfully uploaded artifacts.
-    https://api.shelf.cwscloud.net/cws/artifact/cws-api/2017-02-17T1558:29.397Z-5jHodx2U3J/cws-api.gz.tar
+    https://api.shelf.cwscloud.net/shadow/artifact/reporting-api/2017-02-17-15-58-29.397Z-5jHodx2U3J/reporting-api.gz.tar
     Done
 
 You can use the full URI given back to perform other [Shelf] queries.
+
+You can also upload multiple files to the same directory if you need to.
+
+    $ export SHELF_AUTH_TOKEN="supersecrettoken"
+    $ cws-shelf-upload --shelf=shadow --component=app-engine --version=1.0.0 application.jar override-config-example.json
+    Successfully uploaded artifacts.
+    https://api.shelf.cwscloud.net/shadow/artifact/app-engine/2017-02-23-17-27-39.589-GyVnIMEET8/applicatin.jar
+    https://api.shelf.cwscloud.net/shadow/artifact/app-engine/2017-02-23-17-27-39.589-GyVnIMEET8/override-config-example.json
+    Done
 
 
 Installation
