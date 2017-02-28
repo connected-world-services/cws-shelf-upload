@@ -1,6 +1,6 @@
 {
     "name": "cws-shelf-upload",
-    "version": "1.0.1",
+    "version": "1.0.2",
     "description": "Uploads files to Shelf",
     "main": "lib/index.js",
     "bin": {
@@ -34,6 +34,6 @@
         "neodoc": "~1.4.0",
         "randomstring": "~1.1.0",
         "semver-regex": "~1.0.0",
-        "shelf-lib": "~2.0.1"
+        "shelf-lib": "~2.0.2"
     }
 }
