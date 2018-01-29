@@ -134,6 +134,10 @@ Use `npm` to install this tool.
 
     $ sudo npm install -g cws-shelf-upload
 
+Dockerfile
+----------
+
+A `Dockerfile` is provided in the root of the repository. This builds a container with `cws-shelf-upload` installed. It is provided for convenience, it may be out of date or removed at any point in the future.
 
 License
 -------
